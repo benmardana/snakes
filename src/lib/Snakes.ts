@@ -34,6 +34,8 @@ export class Snakes {
 
   private targetRow: TARGET_ROW;
 
+  private lastCardTouched?: CardName;
+
   constructor(targetRow: TARGET_ROW, difficulty: Difficulty = Difficulty.PRO) {
     this.difficulty = difficulty;
     this.pile = new Hand();
@@ -56,28 +58,30 @@ export class Snakes {
   // Turn over a card on the pile
   turnOverPile() {
     if (this.pile.getCount()) {
-      this.discardPile.addCard(this.pile.takeCard());
+      const card = this.pile.takeCard();
+      this.discardPile.addCard(card);
+      this.lastCardTouched = card.cardName;
     }
 
-    return this.openCard!;
+    return this.nextCard!;
   }
 
   turnOverCardAtPosition(rowIndex: TARGET_ROW, columnIndex: CardName) {
     this.checkGameOver();
 
-    if (this.openCard === undefined) {
-      throw Error('No openCard');
+    if (this.nextCard === undefined) {
+      throw Error('No nextCard');
     }
 
-    if (this.openCard > CardName.Ten) {
-      throw Error('Invalid openCard');
+    if (this.nextCard > CardName.Ten) {
+      throw Error('Invalid nextCard');
     }
 
     if (columnIndex > CardName.Ten) {
       throw Error('Invalid columnIndex');
     }
 
-    const allowedColumn = this.openCard;
+    const allowedColumn = this.nextCard;
 
     if (allowedColumn !== columnIndex) {
       throw Error('Mismatched columnIndex');
@@ -86,6 +90,7 @@ export class Snakes {
     const targetCard = this.rows[rowIndex][columnIndex][0];
 
     this.rows[rowIndex][columnIndex] = [targetCard, true];
+    this.lastCardTouched = targetCard.cardName;
   }
 
   getCardAtPosition(rowIndex: TARGET_ROW, columnIndex: CardName) {
@@ -164,13 +169,9 @@ export class Snakes {
     return runningScore;
   }
 
-  // Display the last turned over card from the pile
-  get openCard() {
-    if (this.discardPile.isEmpty()) {
-      return undefined;
-    }
-
-    return this.discardPile.cardAtIndex(0).cardName;
+  // Get the allowed next target card
+  get nextCard() {
+    return this.lastCardTouched;
   }
 }
 

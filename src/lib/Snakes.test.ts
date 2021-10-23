@@ -48,13 +48,13 @@ describe('Snakes game', () => {
 
     expect(game.pile.getCount()).toEqual(initialPileCount);
     expect(game.discardPile.getCount()).toEqual(0);
-    expect(game.openCard).toBeUndefined();
+    expect(game.nextCard).toBeUndefined();
 
     const turnedOverCard = game.turnOverPile();
 
     expect(game.pile.getCount()).toEqual(initialPileCount - 1);
     expect(game.discardPile.getCount()).toEqual(1);
-    expect(game.openCard).toEqual(turnedOverCard);
+    expect(game.nextCard).toEqual(turnedOverCard);
   });
 
   it('Turning over a card is not allowed when there is no open card', () => {
@@ -68,7 +68,7 @@ describe('Snakes game', () => {
   it('Turning over a card is not allowed when the open card is a face card', () => {
     const game = new Snakes(TARGET_ROW.ROW_1);
 
-    jest.spyOn(game, 'openCard', 'get').mockReturnValue(CardName.King);
+    jest.spyOn(game, 'nextCard', 'get').mockReturnValue(CardName.King);
     expect(() =>
       game.turnOverCardAtPosition(TARGET_ROW.ROW_1, CardName.Ace)
     ).toThrow();
@@ -77,7 +77,7 @@ describe('Snakes game', () => {
   it('Turning over a card is not allowed when the rowIndex is out of bounds', () => {
     const game = new Snakes(TARGET_ROW.ROW_1);
 
-    jest.spyOn(game, 'openCard', 'get').mockReturnValue(CardName.Five);
+    jest.spyOn(game, 'nextCard', 'get').mockReturnValue(CardName.Five);
 
     expect(() =>
       game.turnOverCardAtPosition(TARGET_ROW.ROW_1, CardName.King)
@@ -87,7 +87,7 @@ describe('Snakes game', () => {
   it('Turning over a card is allowed when the column corresponds to the opened card', () => {
     const game = new Snakes(TARGET_ROW.ROW_1);
 
-    jest.spyOn(game, 'openCard', 'get').mockReturnValue(CardName.Five);
+    jest.spyOn(game, 'nextCard', 'get').mockReturnValue(CardName.Five);
 
     expect(() =>
       game.turnOverCardAtPosition(TARGET_ROW.ROW_1, CardName.Five)
@@ -97,7 +97,7 @@ describe('Snakes game', () => {
   it('Turning over a card is disallowed when the column does not correspond to the opened card', () => {
     const game = new Snakes(TARGET_ROW.ROW_1);
 
-    jest.spyOn(game, 'openCard', 'get').mockReturnValue(CardName.Five);
+    jest.spyOn(game, 'nextCard', 'get').mockReturnValue(CardName.Five);
 
     expect(() =>
       game.turnOverCardAtPosition(TARGET_ROW.ROW_1, CardName.Two)
@@ -115,7 +115,7 @@ describe('Snakes game', () => {
   it('Viewing a turned card is allowed', () => {
     const game = new Snakes(TARGET_ROW.ROW_1);
 
-    jest.spyOn(game, 'openCard', 'get').mockReturnValue(CardName.Five);
+    jest.spyOn(game, 'nextCard', 'get').mockReturnValue(CardName.Five);
 
     game.turnOverCardAtPosition(TARGET_ROW.ROW_1, CardName.Five);
 
