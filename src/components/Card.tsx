@@ -1,13 +1,14 @@
 import { CardName, Suit } from 'typedeck';
 
 interface CardProps {
-  cardName: CardName;
-  suit: Suit;
+  cardName?: CardName;
+  suit?: Suit;
   hidden?: boolean;
   onClick?: () => void;
+  outlined?: boolean;
 }
 
-const Card = ({ cardName, suit, hidden, onClick }: CardProps) =>
+const Card = ({ cardName, suit, hidden, onClick, outlined }: CardProps) =>
   hidden ? (
     <button
       type="button"
@@ -15,19 +16,21 @@ const Card = ({ cardName, suit, hidden, onClick }: CardProps) =>
       style={{
         background: 'none',
         color: 'inherit',
-        border: 'none',
+        border: outlined ? '2px dashed yellow' : 'none',
+        borderRadius: outlined ? '5%' : undefined,
         font: 'inherit',
-        cursor: 'pointer',
+        cursor: outlined ? 'auto' : 'pointer',
         outline: 'inherit',
       }}
     >
-      <span>
+      <span style={{ visibility: outlined ? 'hidden' : 'visible' }}>
         <img
           src="/cards/back.svg"
           alt="card"
           style={{
             boxShadow: '5px 5px 14px -7px #000000',
-            borderRadius: '0.1em',
+            borderRadius: '5%',
+            boxSizing: 'content-box',
           }}
         />
       </span>
@@ -37,8 +40,10 @@ const Card = ({ cardName, suit, hidden, onClick }: CardProps) =>
       src={`/cards/${suit}/${cardName}.svg`}
       alt="card"
       style={{
+        border: outlined ? '2px dashed yellow' : 'none',
         boxShadow: '5px 5px 14px -7px #000000',
-        borderRadius: '0.1em',
+        borderRadius: '5%',
+        boxSizing: 'content-box',
       }}
     />
   );

@@ -48,7 +48,7 @@ export class Snakes {
     this.rows = Array.from(Array(this.difficulty), () =>
       Array.from(Array(ROW_LENGTH), () => [
         deck.takeCard() as PlayingCard,
-        Math.random() >= 0.5,
+        false,
       ])
     );
 
@@ -57,6 +57,7 @@ export class Snakes {
 
   // Turn over a card on the pile
   turnOverPile() {
+    console.log('turning');
     if (this.pile.getCount()) {
       const card = this.pile.takeCard();
       this.discardPile.addCard(card);

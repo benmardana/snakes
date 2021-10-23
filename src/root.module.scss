@@ -16,7 +16,7 @@
     height: calc(8vw * 1.3999);
 
     &:not(:last-child) {
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     img,
@@ -24,7 +24,7 @@
       max-width: 8vw;
 
       &:not(:last-child) {
-        margin-right: 6px;
+        margin-right: 8px;
       }
     }
 
