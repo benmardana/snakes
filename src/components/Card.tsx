@@ -21,6 +21,7 @@ const Card = ({ cardName, suit, hidden, onClick, outlined }: CardProps) =>
         font: 'inherit',
         cursor: outlined ? 'auto' : 'pointer',
         outline: 'inherit',
+        boxSizing: 'content-box',
       }}
     >
       <span style={{ visibility: outlined ? 'hidden' : 'visible' }}>
@@ -28,7 +29,7 @@ const Card = ({ cardName, suit, hidden, onClick, outlined }: CardProps) =>
           src="/cards/back.svg"
           alt="card"
           style={{
-            boxShadow: '5px 5px 14px -7px #000000',
+            boxShadow: outlined ? undefined : '5px 5px 14px -7px #000000',
             borderRadius: '5%',
             boxSizing: 'content-box',
           }}
@@ -41,7 +42,7 @@ const Card = ({ cardName, suit, hidden, onClick, outlined }: CardProps) =>
       alt="card"
       style={{
         border: outlined ? '2px dashed yellow' : 'none',
-        boxShadow: '5px 5px 14px -7px #000000',
+        boxShadow: outlined ? undefined : '5px 5px 14px -7px #000000',
         borderRadius: '5%',
         boxSizing: 'content-box',
       }}

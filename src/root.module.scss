@@ -11,9 +11,10 @@
   justify-content: center;
   height: 100%;
   background-color: rgb(60, 112, 60);
+  overflow: scroll;
 
   div {
-    height: calc(8vw * 1.3999);
+    height: calc(6vw * 1.3999);
 
     &:not(:last-child) {
       margin-bottom: 8px;
@@ -21,7 +22,8 @@
 
     img,
     button {
-      max-width: 8vw;
+      width: 6vw;
+      height: calc(6vw * 1.3999);
 
       &:not(:last-child) {
         margin-right: 8px;
