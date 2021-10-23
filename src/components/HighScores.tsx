@@ -11,12 +11,17 @@ const HighScores = ({
   const { data, loading } = useHighScores();
 
   return (
-    <Dialog title="High scores" isOpen={isOpen} onClose={onClose}>
+    <Dialog
+      title="High scores"
+      isOpen={isOpen}
+      onClose={onClose}
+      style={{ width: 'unset' }}
+    >
       <div className={Classes.DIALOG_BODY}>
         {loading ? (
           <Spinner />
         ) : (
-          <HTMLTable>
+          <HTMLTable style={{ fontSize: '18px' }}>
             <thead>
               <tr>
                 <th>Name</th>
@@ -24,12 +29,14 @@ const HighScores = ({
               </tr>
             </thead>
             <tbody>
-              {Object.entries(data).map(([name, score]) => (
-                <tr>
-                  <td>{name}</td>
-                  <td>{score}</td>
-                </tr>
-              ))}
+              {Object.entries(data)
+                .slice(0, 10)
+                .map(([name, score], key) => (
+                  <tr key={key}>
+                    <td>{name}</td>
+                    <td>{score}</td>
+                  </tr>
+                ))}
             </tbody>
           </HTMLTable>
         )}

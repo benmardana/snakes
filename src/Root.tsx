@@ -5,7 +5,7 @@ import Card from './components/Card';
 import Help from './components/Help';
 import HighScores from './components/HighScores';
 import { Difficulty, ROW_LENGTH, TARGET_ROW } from './lib/Snakes';
-import useHighScores from './hooks/useHighScores';
+import usePreload from './hooks/usePreload';
 import styles from './root.module.scss';
 
 const Root = () => {
@@ -14,18 +14,18 @@ const Root = () => {
   const [targetRow, setTargetRow] = useState<TARGET_ROW>();
   const [showHelpDialog, setShowHelpDialog] = useState(false);
   const [showHighScoreDialog, setShowHighScoreDialog] = useState(false);
-  useHighScores();
+  usePreload();
 
   const renderCards = useMemo(
     () =>
       Array.from(Array(difficulty), () =>
-        Array.from(Array(ROW_LENGTH), () => <Card hidden />)
+        Array.from(Array(ROW_LENGTH), (_, key) => <Card key={key} hidden />)
       ),
     [difficulty]
   );
 
   return (
-    <div style={{ height: '100%' }}>
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <Navbar>
         <Navbar.Group align={Alignment.LEFT}>
           <Navbar.Heading>Snakes</Navbar.Heading>
