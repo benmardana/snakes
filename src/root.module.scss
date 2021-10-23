@@ -14,14 +14,17 @@
     }
 
     img {
+      will-change: transform;
       position: relative;
+      transition: transform 100ms ease-in;
 
       &:not(:last-child) {
         margin-right: 6px;
       }
 
       &:hover {
-        top: -2px;
+        transition: transform 50ms ease-out;
+        transform: translateY(-16px);
       }
     }
   }
