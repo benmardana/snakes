@@ -18,10 +18,8 @@ const Card = ({ cardName, suit, hidden }: CardProps | HiddenCardProps) =>
       src="/cards/back.svg"
       alt="card"
       style={{
-        maxHeight: '150px',
-        marginLeft: '8px',
-        marginRight: '8px',
-        boxShadow: '5px 5px 5px black',
+        height: '100%',
+        boxShadow: '5px 5px 14px -7px #000000',
         borderRadius: '5px',
       }}
     />
@@ -29,7 +27,11 @@ const Card = ({ cardName, suit, hidden }: CardProps | HiddenCardProps) =>
     <img
       src={`/cards/${suit}/${cardName}.svg`}
       alt="card"
-      style={{ maxHeight: '110px' }}
+      style={{
+        height: '100%',
+        boxShadow: '5px 5px 14px -7px #000000',
+        borderRadius: '5px',
+      }}
     />
   );
 

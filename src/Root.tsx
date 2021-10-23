@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { Alignment, Button, Navbar } from '@blueprintjs/core';
 import Snakes from './lib';
 import Card from './components/Card';
 import { Difficulty, ROW_LENGTH, TARGET_ROW } from './lib/Snakes';
@@ -18,9 +19,17 @@ const Root = () => {
   );
 
   return (
-    <div className={styles.Root}>
-      <h1>Snakes</h1>
-      <div>
+    <div style={{ height: '100%' }}>
+      <Navbar>
+        <Navbar.Group align={Alignment.LEFT}>
+          <Navbar.Heading>Snakes</Navbar.Heading>
+          <Navbar.Divider />
+          <Button className="bp4-minimal" text="New Game" />
+          <Button className="bp4-minimal" text="High Scores" />
+          <Button className="bp4-minimal" text="Help" />
+        </Navbar.Group>
+      </Navbar>
+      <div className={styles.Game}>
         {renderCards.map((row) => (
           <div>{row}</div>
         ))}
