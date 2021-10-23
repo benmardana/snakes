@@ -21,7 +21,7 @@ export enum Difficulty {
 
 export const ROW_LENGTH = 10;
 
-type RowCard = [card: PlayingCard, isFlipped: boolean];
+export type RowCard = [card: PlayingCard, isFlipped: boolean];
 
 export class Snakes {
   private difficulty: Difficulty;
@@ -48,7 +48,7 @@ export class Snakes {
     this.rows = Array.from(Array(this.difficulty), () =>
       Array.from(Array(ROW_LENGTH), () => [
         deck.takeCard() as PlayingCard,
-        false,
+        Math.random() >= 0.5,
       ])
     );
 

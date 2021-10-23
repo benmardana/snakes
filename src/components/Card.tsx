@@ -3,34 +3,42 @@ import { CardName, Suit } from 'typedeck';
 interface CardProps {
   cardName: CardName;
   suit: Suit;
-  hidden?: never;
+  hidden?: boolean;
+  onClick?: () => void;
 }
 
-interface HiddenCardProps {
-  cardName?: never;
-  suit?: never;
-  hidden: true;
-}
-
-const Card = ({ cardName, suit, hidden }: CardProps | HiddenCardProps) =>
+const Card = ({ cardName, suit, hidden, onClick }: CardProps) =>
   hidden ? (
-    <img
-      src="/cards/back.svg"
-      alt="card"
+    <button
+      type="button"
+      onClick={() => onClick?.()}
       style={{
-        height: '100%',
-        boxShadow: '5px 5px 14px -7px #000000',
-        borderRadius: '5px',
+        background: 'none',
+        color: 'inherit',
+        border: 'none',
+        font: 'inherit',
+        cursor: 'pointer',
+        outline: 'inherit',
       }}
-    />
+    >
+      <span>
+        <img
+          src="/cards/back.svg"
+          alt="card"
+          style={{
+            boxShadow: '5px 5px 14px -7px #000000',
+            borderRadius: '0.1em',
+          }}
+        />
+      </span>
+    </button>
   ) : (
     <img
       src={`/cards/${suit}/${cardName}.svg`}
       alt="card"
       style={{
-        height: '100%',
         boxShadow: '5px 5px 14px -7px #000000',
-        borderRadius: '5px',
+        borderRadius: '0.1em',
       }}
     />
   );

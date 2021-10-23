@@ -1,48 +1,41 @@
-import { useMemo, useState } from 'react';
-import { Alignment, Button, Navbar } from '@blueprintjs/core';
+import { useState } from 'react';
+import { Button } from '@blueprintjs/core';
+
 import Snakes from './lib';
-import Card from './components/Card';
+import { Difficulty, TARGET_ROW } from './lib/Snakes';
+import Cards from './components/Cards';
 import Help from './components/Help';
+import Navbar from './components/Navbar';
 import HighScores from './components/HighScores';
-import { Difficulty, ROW_LENGTH, TARGET_ROW } from './lib/Snakes';
 import usePreload from './hooks/usePreload';
+
 import styles from './root.module.scss';
 
 const Root = () => {
-  const [game, setGame] = useState<Snakes>();
   const [difficulty, setDifficulty] = useState(Difficulty.PRO);
+  const [game, setGame] = useState<Snakes>(new Snakes(0, difficulty));
   const [targetRow, setTargetRow] = useState<TARGET_ROW>();
   const [showHelpDialog, setShowHelpDialog] = useState(false);
   const [showHighScoreDialog, setShowHighScoreDialog] = useState(false);
   usePreload();
 
-  const renderCards = useMemo(
-    () =>
-      Array.from(Array(difficulty), () =>
-        Array.from(Array(ROW_LENGTH), (_, key) => <Card key={key} hidden />)
-      ),
-    [difficulty]
-  );
+  const handleOnCardClicked = (row: number, column: number) => {
+    console.log(row, column);
+  };
 
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <div className={styles.Root}>
       <Navbar>
-        <Navbar.Group align={Alignment.LEFT}>
-          <Navbar.Heading>Snakes</Navbar.Heading>
-          <Navbar.Divider />
-          <Button text="New Game" minimal />
-          <Button
-            text="High Scores"
-            onClick={() => setShowHighScoreDialog(true)}
-            minimal
-          />
-          <Button text="Help" onClick={() => setShowHelpDialog(true)} minimal />
-        </Navbar.Group>
+        <Button text="New Game" minimal />
+        <Button
+          text="High Scores"
+          onClick={() => setShowHighScoreDialog(true)}
+          minimal
+        />
+        <Button text="Help" onClick={() => setShowHelpDialog(true)} minimal />
       </Navbar>
       <div className={styles.Game}>
-        {renderCards.map((row, key) => (
-          <div key={key}>{row}</div>
-        ))}
+        <Cards cards={game.rows} onCardClicked={handleOnCardClicked} />
       </div>
       <HighScores
         isOpen={showHighScoreDialog}

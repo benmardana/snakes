@@ -12,16 +12,15 @@ const HighScores = ({
 
   return (
     <Dialog
-      title="High scores"
       isOpen={isOpen}
       onClose={onClose}
-      style={{ width: 'unset' }}
+      style={{ width: 'unset', paddingBottom: 0 }}
     >
       <div className={Classes.DIALOG_BODY}>
         {loading ? (
           <Spinner />
         ) : (
-          <HTMLTable style={{ fontSize: '18px' }}>
+          <HTMLTable style={{ fontSize: '30px' }}>
             <thead>
               <tr>
                 <th>Name</th>
