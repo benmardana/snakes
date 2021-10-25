@@ -36,6 +36,8 @@ export const ROW_LENGTH = 10;
 
 export type RowCard = [card: PlayingCard, isFlipped: boolean];
 
+const FACE_CARD = [CardName.Jack, CardName.Queen, CardName.King];
+
 export class Snakes {
   private difficulty: Difficulty;
 
@@ -49,8 +51,6 @@ export class Snakes {
 
   private lastCardOpened?: CardName;
 
-  private isLastCardUsed: boolean;
-
   private onGameOver: () => void;
 
   constructor(
@@ -62,7 +62,6 @@ export class Snakes {
     this.pile = new Hand();
     this.discardPile = new Hand();
     this.targetRow = targetRow;
-    this.isLastCardUsed = false;
     this.onGameOver = onGameOver;
 
     const deck = new SolitaireGameType().createDeck();
@@ -80,23 +79,18 @@ export class Snakes {
 
   // Turn over a card on the pile
   turnOverPile() {
+    this.checkGameOver();
     if (this.pile.getCount()) {
       const card = this.pile.takeCard();
       this.discardPile.addCard(card);
       this.lastCardOpened = card.cardName;
     }
-
-    if (this.isLastCardUsed) {
-      this.onGameOver();
-    }
-
+    this.checkGameOver();
     return this.nextCard!;
   }
 
   turnOverCardAtPosition(rowIndex: TARGET_ROW, columnIndex: CardName) {
     this.checkGameOver();
-
-    this.isLastCardUsed = this.nextCard ? false : this.pile.isEmpty();
 
     if (this.nextCard === undefined) {
       throw Error('Turn over a card from your card stack to start the game!');
@@ -122,10 +116,7 @@ export class Snakes {
 
     this.rows[rowIndex][columnIndex] = [targetCard, true];
     this.lastCardOpened = targetCard.cardName;
-
-    if (this.isLastCardUsed) {
-      this.onGameOver();
-    }
+    this.checkGameOver();
   }
 
   getCardAtPosition(rowIndex: TARGET_ROW, columnIndex: CardName) {
@@ -140,15 +131,22 @@ export class Snakes {
 
   private checkGameOver() {
     if (this.isGameOver()) {
-      throw Error('Game over');
+      throw Error('Game over!');
     }
   }
 
   isGameOver() {
-    return (
-      this.isLastCardUsed ||
-      this.rows.every((row) => row.every(([, isFlipped]) => isFlipped))
-    );
+    const hasNoMove = this.nextCard && FACE_CARD.includes(this.nextCard);
+
+    const gameOver =
+      (hasNoMove && this.pile.isEmpty()) ||
+      this.rows.every((row) => row.every(([, isFlipped]) => isFlipped));
+
+    if (gameOver) {
+      this.onGameOver();
+    }
+
+    return gameOver;
   }
 
   /* 

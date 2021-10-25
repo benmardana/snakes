@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Popover2 } from '@blueprintjs/popover2';
 import { PlayingCard } from 'typedeck';
 import { Button, Intent, Menu, MenuItem, Position } from '@blueprintjs/core';
@@ -45,7 +45,6 @@ const Root = () => {
     } catch (error) {
       // pop a toast with the error message
       if (error instanceof Error) {
-        console.error(error.message);
         showToast({
           message: error.message,
           intent: Intent.WARNING,
@@ -59,8 +58,20 @@ const Root = () => {
   const handleOnPileClicked = game.pile.isEmpty()
     ? undefined
     : () => {
-        game.turnOverPile();
-        updateScore();
+        try {
+          game.turnOverPile();
+        } catch (error) {
+          // pop a toast with the error message
+          if (error instanceof Error) {
+            showToast({
+              message: error.message,
+              intent: Intent.WARNING,
+              timeout: 2000,
+            });
+          }
+        } finally {
+          updateScore();
+        }
       };
 
   const discardTop = game.discardPile.isEmpty()
