@@ -47,13 +47,23 @@ export class Snakes {
 
   private targetRow: TARGET_ROW;
 
-  private lastCardTouched?: CardName;
+  private lastCardOpened?: CardName;
 
-  constructor(targetRow: TARGET_ROW, difficulty: Difficulty = Difficulty.PRO) {
+  private isLastCardUsed: boolean;
+
+  private onGameOver: () => void;
+
+  constructor(
+    targetRow: TARGET_ROW,
+    onGameOver: () => void,
+    difficulty: Difficulty = Difficulty.PRO
+  ) {
     this.difficulty = difficulty;
     this.pile = new Hand();
     this.discardPile = new Hand();
     this.targetRow = targetRow;
+    this.isLastCardUsed = false;
+    this.onGameOver = onGameOver;
 
     const deck = new SolitaireGameType().createDeck();
     deck.shuffle();
@@ -73,7 +83,11 @@ export class Snakes {
     if (this.pile.getCount()) {
       const card = this.pile.takeCard();
       this.discardPile.addCard(card);
-      this.lastCardTouched = card.cardName;
+      this.lastCardOpened = card.cardName;
+    }
+
+    if (this.isLastCardUsed) {
+      this.onGameOver();
     }
 
     return this.nextCard!;
@@ -81,6 +95,8 @@ export class Snakes {
 
   turnOverCardAtPosition(rowIndex: TARGET_ROW, columnIndex: CardName) {
     this.checkGameOver();
+
+    this.isLastCardUsed = this.nextCard ? false : this.pile.isEmpty();
 
     if (this.nextCard === undefined) {
       throw Error('Turn over a card from your card stack to start the game!');
@@ -105,7 +121,11 @@ export class Snakes {
     const targetCard = this.rows[rowIndex][columnIndex][0];
 
     this.rows[rowIndex][columnIndex] = [targetCard, true];
-    this.lastCardTouched = targetCard.cardName;
+    this.lastCardOpened = targetCard.cardName;
+
+    if (this.isLastCardUsed) {
+      this.onGameOver();
+    }
   }
 
   getCardAtPosition(rowIndex: TARGET_ROW, columnIndex: CardName) {
@@ -126,7 +146,7 @@ export class Snakes {
 
   isGameOver() {
     return (
-      this.pile.isEmpty() ||
+      this.isLastCardUsed ||
       this.rows.every((row) => row.every(([, isFlipped]) => isFlipped))
     );
   }
@@ -186,7 +206,7 @@ export class Snakes {
 
   // Get the allowed next target card
   get nextCard() {
-    return this.lastCardTouched;
+    return this.lastCardOpened;
   }
 }
 

@@ -16,7 +16,7 @@ const Card = ({ cardName, suit, hidden, onClick, outlined }: CardProps) =>
       style={{
         background: 'none',
         color: 'inherit',
-        border: outlined ? '2px dashed yellow' : 'none',
+        border: outlined ? '2px dashed #2d562d' : 'none',
         borderRadius: outlined ? '5%' : undefined,
         font: 'inherit',
         cursor: outlined ? 'auto' : 'pointer',
@@ -41,7 +41,7 @@ const Card = ({ cardName, suit, hidden, onClick, outlined }: CardProps) =>
       src={`/cards/${suit}/${cardName}.svg`}
       alt="card"
       style={{
-        border: outlined ? '2px dashed yellow' : 'none',
+        border: outlined ? '2px dashed #2d562d' : 'none',
         boxShadow: outlined ? undefined : '5px 5px 14px -7px #000000',
         borderRadius: '5%',
         boxSizing: 'content-box',

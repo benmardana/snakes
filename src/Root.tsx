@@ -16,9 +16,15 @@ import { showToast } from './utils/toaster';
 import styles from './root.module.scss';
 
 const Root = () => {
+  const handleOnGameOver = () => {
+    console.log('game over!');
+  };
+
   const [difficulty, setDifficulty] = useState(Difficulty.PRO);
   const [targetRow, setTargetRow] = useState<TARGET_ROW>(TARGET_ROW.ROW_1);
-  const [game, setGame] = useState<Snakes>(new Snakes(targetRow, difficulty));
+  const [game, setGame] = useState<Snakes>(
+    new Snakes(targetRow, handleOnGameOver, difficulty)
+  );
   const [gameMeta, setGameMeta] = useState({ score: game.calculatePoints() });
   const [showHelpDialog, setShowHelpDialog] = useState(false);
   const [showHighScoreDialog, setShowHighScoreDialog] = useState(false);
@@ -30,7 +36,7 @@ const Root = () => {
     resetTargetRow: TARGET_ROW,
     resetDifficulty: Difficulty
   ) => {
-    setGame(new Snakes(resetTargetRow, resetDifficulty));
+    setGame(new Snakes(resetTargetRow, handleOnGameOver, resetDifficulty));
   };
 
   const handleOnCardClicked = (row: number, column: number) => {
@@ -76,7 +82,7 @@ const Root = () => {
       <Navbar>
         <Button
           text="New Game"
-          onClick={() => setGame(new Snakes(0, difficulty))}
+          onClick={() => setGame(new Snakes(0, handleOnGameOver, difficulty))}
           minimal
         />
         <Popover2
