@@ -57,7 +57,6 @@ export class Snakes {
 
   // Turn over a card on the pile
   turnOverPile() {
-    console.log('turning');
     if (this.pile.getCount()) {
       const card = this.pile.takeCard();
       this.discardPile.addCard(card);

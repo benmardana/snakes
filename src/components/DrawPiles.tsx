@@ -6,10 +6,10 @@ const DrawPiles = ({
   onClickPile,
 }: {
   showCard?: PlayingCard;
-  onClickPile: () => void;
+  onClickPile?: () => void;
 }) => (
   <div>
-    <Card hidden onClick={onClickPile} />
+    <Card hidden onClick={onClickPile} outlined={!onClickPile} />
     <Card
       cardName={showCard?.cardName}
       suit={showCard?.suit}
