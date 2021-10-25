@@ -19,6 +19,19 @@ export enum Difficulty {
   PRO = 4,
 }
 
+export const getDifficultyName = (difficulty: Difficulty) => {
+  switch (difficulty) {
+    case Difficulty.ROOKIE:
+      return 'Rookie';
+    case Difficulty.INTERMEDIATE:
+      return 'Intermediate';
+    case Difficulty.PRO:
+      return 'Pro';
+    default:
+      return '???';
+  }
+};
+
 export const ROW_LENGTH = 10;
 
 export type RowCard = [card: PlayingCard, isFlipped: boolean];
@@ -70,21 +83,23 @@ export class Snakes {
     this.checkGameOver();
 
     if (this.nextCard === undefined) {
-      throw Error('No nextCard');
+      throw Error('Turn over a card from your card stack to start the game!');
     }
 
     if (this.nextCard > CardName.Ten) {
-      throw Error('Invalid nextCard');
+      throw Error('The last turned over card must not be a face card');
     }
 
     if (columnIndex > CardName.Ten) {
-      throw Error('Invalid columnIndex');
+      throw Error('???');
     }
 
     const allowedColumn = this.nextCard;
 
     if (allowedColumn !== columnIndex) {
-      throw Error('Mismatched columnIndex');
+      throw Error(
+        'You can only select a card in a column matching the number of your last turned card'
+      );
     }
 
     const targetCard = this.rows[rowIndex][columnIndex][0];
