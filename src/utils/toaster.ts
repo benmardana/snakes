@@ -3,7 +3,7 @@ import { Position, OverlayToaster, ToastProps } from '@blueprintjs/core';
 const AppToaster = OverlayToaster.create({
   className: 'app-toaster',
   position: Position.TOP,
-  maxToasts: 5,
+  maxToasts: 1,
 });
 
 // eslint-disable-next-line import/prefer-default-export

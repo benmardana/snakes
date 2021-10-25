@@ -127,7 +127,9 @@ const Root = () => {
           minimal
         />
         <Button text="Help" onClick={() => setShowHelpDialog(true)} minimal />
-        <strong style={{ marginLeft: '156px' }}>Score: {gameMeta.score}</strong>
+        <h2 style={{ flexGrow: 1, textAlign: 'right' }}>
+          Score: {gameMeta.score}
+        </h2>
       </Navbar>
       <div className={styles.Game}>
         <Cards cards={game.rows} onCardClicked={handleOnCardClicked} />

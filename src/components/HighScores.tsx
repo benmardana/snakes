@@ -10,9 +10,7 @@ const HighScores = ({
   onClose: () => void;
 }) => {
   const { data, loading } = useHighScores();
-  const scores = Object.entries(data)
-    .slice(0, 10)
-    .sort((a, b) => b[1] - a[1]);
+  const scores = Object.entries(data).sort((a, b) => b[1] - a[1]);
 
   return (
     <Dialog
