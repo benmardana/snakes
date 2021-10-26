@@ -1,7 +1,14 @@
 import { useState } from 'react';
 import { Popover2 } from '@blueprintjs/popover2';
 import { PlayingCard } from 'typedeck';
-import { Button, Intent, Menu, MenuItem, Position } from '@blueprintjs/core';
+import {
+  Button,
+  Colors,
+  Intent,
+  Menu,
+  MenuItem,
+  Position,
+} from '@blueprintjs/core';
 
 import Snakes from './lib';
 import { Difficulty, getDifficultyName, TARGET_ROW } from './lib/Snakes';
@@ -16,10 +23,16 @@ import { showToast } from './utils/toaster';
 
 import styles from './root.module.scss';
 
+const DEFAULT_ROW = TARGET_ROW.ROW_1;
+const DEFAULT_DIFFICULTY = Difficulty.PRO;
+
 const Root = () => {
   usePreload();
-  const [targetRow, setTargetRow] = useState<TARGET_ROW>(TARGET_ROW.ROW_1);
-  const [difficulty, setDifficulty] = useState(Difficulty.PRO);
+  const [{ targetRow, difficulty }, setGameSettings] = useState({
+    targetRow: DEFAULT_ROW,
+    difficulty: DEFAULT_DIFFICULTY,
+  });
+
   const [showAddHighScoreDialog, setShowAddHighScoreDialog] = useState(false);
   const [showHelpDialog, setShowHelpDialog] = useState(false);
   const [showHighScoreDialog, setShowHighScoreDialog] = useState(false);
@@ -42,10 +55,11 @@ const Root = () => {
     );
 
   const resetGame = (
-    resetTargetRow: TARGET_ROW = targetRow,
-    resetDifficulty: Difficulty = difficulty
+    resetTargetRow: TARGET_ROW,
+    resetDifficulty: Difficulty
   ) => {
     setGame(new Snakes(resetTargetRow, handleOnGameOver, resetDifficulty));
+    updateScore();
   };
 
   const handleOnCardClicked = (row: number, column: number) => {
@@ -89,21 +103,21 @@ const Root = () => {
 
   const handleOnNewGame = () => {
     if (confirmChange()) {
-      resetGame();
+      resetGame(DEFAULT_ROW, DEFAULT_DIFFICULTY);
     }
   };
 
   const handleOnChangeDifficulty = (newDifficulty: Difficulty) => {
     if (confirmChange()) {
-      resetGame(targetRow, newDifficulty);
-      setDifficulty(newDifficulty);
+      resetGame(DEFAULT_ROW, newDifficulty);
+      setGameSettings({ targetRow: DEFAULT_ROW, difficulty: newDifficulty });
     }
   };
 
   const handleOnChangeTargetRow = (newRow: TARGET_ROW) => {
     if (confirmChange()) {
-      resetGame(newRow, difficulty);
-      setTargetRow(newRow);
+      resetGame(newRow, DEFAULT_DIFFICULTY);
+      setGameSettings({ targetRow: newRow, difficulty: DEFAULT_DIFFICULTY });
     }
   };
 
@@ -151,7 +165,14 @@ const Root = () => {
           }
           position={Position.BOTTOM}
         >
-          <Button text={`Target row (${targetRow + 1})`} minimal />
+          <Button
+            text={
+              <span style={{ color: Colors.GOLD4 }}>
+                Target row ({`${targetRow + 1}`})
+              </span>
+            }
+            minimal
+          />
         </Popover2>
         <Button
           text="High Scores"
@@ -164,7 +185,11 @@ const Root = () => {
         </h2>
       </Navbar>
       <div className={styles.Game}>
-        <Cards cards={game.rows} onCardClicked={handleOnCardClicked} />
+        <Cards
+          cards={game.rows}
+          onCardClicked={handleOnCardClicked}
+          targetRow={targetRow}
+        />
         <DrawPiles onClickPile={handleOnPileClicked} showCard={discardTop} />
       </div>
       <HighScores
@@ -177,7 +202,7 @@ const Root = () => {
         onClose={() => {
           setShowAddHighScoreDialog(false);
           setShowHighScoreDialog(true);
-          resetGame();
+          resetGame(DEFAULT_ROW, DEFAULT_DIFFICULTY);
         }}
         isOpen={showAddHighScoreDialog}
       />
