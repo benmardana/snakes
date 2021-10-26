@@ -1,22 +1,16 @@
 import { useEffect } from 'react';
 
-const cacheImages = async () => {
-  const promises = [...Array(4)]
-    .map((_, suit) =>
-      [...Array(13)].map(
-        (__, cardName) =>
-          new Promise((resolve, reject) => {
-            const img = new Image();
+const cacheImages = () => {
+  [...Array(4)].forEach((_, suit) =>
+    [...Array(13)].forEach((__, cardName) => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.href = `/cards/${suit}/${cardName}.svg`;
+      link.as = 'image';
 
-            img.src = `/cards/${suit}/${cardName}.svg`;
-            img.onload = resolve;
-            img.onerror = reject;
-          })
-      )
-    )
-    .flat();
-
-  await Promise.all(promises);
+      document.head.append(link);
+    })
+  );
 };
 
 const useCacheImages = () => {
