@@ -179,7 +179,7 @@ const Root = () => {
           onClick={() => setShowHighScoreDialog(true)}
           minimal
         />
-        <Button text="Help" onClick={() => setShowHelpDialog(true)} minimal />
+        {/* <Button text="Help" onClick={() => setShowHelpDialog(true)} minimal /> */}
         <h2 style={{ flexGrow: 1, textAlign: 'right' }}>
           Score: {gameMeta.score}
         </h2>
