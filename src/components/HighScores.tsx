@@ -3,17 +3,20 @@ import { Dialog, Classes, Spinner, HTMLTable } from '@blueprintjs/core';
 import useHighScores from '../hooks/useHighScores';
 
 const HighScores = ({
-  isOpen,
   onClose,
+  isOpen,
 }: {
-  isOpen?: boolean;
   onClose: () => void;
+  isOpen?: boolean;
 }) => {
   const { data, loading } = useHighScores();
-  const scores = Object.entries(data).sort((a, b) => b[1] - a[1]);
+  const scores = Object.entries(data)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 10);
 
   return (
     <Dialog
+      title="High Scores"
       isOpen={isOpen}
       onClose={onClose}
       style={{ width: 'unset', paddingBottom: 0 }}
@@ -24,18 +27,18 @@ const HighScores = ({
         ) : scores.length === 0 ? (
           'No scores yet, be the first to get on the scoreboard!'
         ) : (
-          <HTMLTable style={{ fontSize: '30px' }}>
+          <HTMLTable bordered style={{ fontSize: '16px' }}>
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Score</th>
+                <th style={{ textAlign: 'center' }}>Initials</th>
+                <th style={{ textAlign: 'center' }}>High Score</th>
               </tr>
             </thead>
             <tbody>
               {scores.map(([name, score], key) => (
                 <tr key={key}>
-                  <td>{name}</td>
-                  <td>{score}</td>
+                  <td style={{ textAlign: 'center' }}>{name}</td>
+                  <td style={{ textAlign: 'center' }}>{score}</td>
                 </tr>
               ))}
             </tbody>

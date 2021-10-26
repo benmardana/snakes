@@ -1,0 +1,17 @@
+.InputContainer {
+  justify-content: center;
+  margin-bottom: 28px;
+}
+
+.Input {
+  border: none;
+  background: transparent;
+  border-bottom: 3px solid grey;
+  margin-left: 4px;
+  margin-right: 4px;
+  font-size: 52px;
+
+  &::placeholder {
+    opacity: 0.2;
+  }
+}

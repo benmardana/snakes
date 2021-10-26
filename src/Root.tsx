@@ -10,31 +10,40 @@ import Help from './components/Help';
 import Navbar from './components/Navbar';
 import DrawPiles from './components/DrawPiles';
 import HighScores from './components/HighScores';
+import AddScore from './components/AddScore';
 import usePreload from './hooks/usePreload';
 import { showToast } from './utils/toaster';
 
 import styles from './root.module.scss';
 
 const Root = () => {
+  usePreload();
+  const [targetRow, setTargetRow] = useState<TARGET_ROW>(TARGET_ROW.ROW_1);
+  const [difficulty, setDifficulty] = useState(Difficulty.PRO);
+  const [showAddHighScoreDialog, setShowAddHighScoreDialog] = useState(false);
+  const [showHelpDialog, setShowHelpDialog] = useState(false);
+  const [showHighScoreDialog, setShowHighScoreDialog] = useState(false);
   const handleOnGameOver = () => {
-    console.log('game over!');
+    setShowAddHighScoreDialog(true);
   };
 
-  const [difficulty, setDifficulty] = useState(Difficulty.PRO);
-  const [targetRow, setTargetRow] = useState<TARGET_ROW>(TARGET_ROW.ROW_1);
   const [game, setGame] = useState<Snakes>(
     new Snakes(targetRow, handleOnGameOver, difficulty)
   );
   const [gameMeta, setGameMeta] = useState({ score: game.calculatePoints() });
-  const [showHelpDialog, setShowHelpDialog] = useState(false);
-  const [showHighScoreDialog, setShowHighScoreDialog] = useState(false);
-  usePreload();
 
   const updateScore = () => setGameMeta({ score: game.calculatePoints() });
 
+  const confirmChange = () =>
+    game.discardPile.isEmpty() ||
+    // eslint-disable-next-line no-alert
+    window.confirm(
+      'This will reset your game and lose progress\nDo you want to proceed?'
+    );
+
   const resetGame = (
-    resetTargetRow: TARGET_ROW,
-    resetDifficulty: Difficulty
+    resetTargetRow: TARGET_ROW = targetRow,
+    resetDifficulty: Difficulty = difficulty
   ) => {
     setGame(new Snakes(resetTargetRow, handleOnGameOver, resetDifficulty));
   };
@@ -78,24 +87,30 @@ const Root = () => {
     ? undefined
     : (game.discardPile.cardAtIndex(0) as PlayingCard);
 
+  const handleOnNewGame = () => {
+    if (confirmChange()) {
+      resetGame();
+    }
+  };
+
   const handleOnChangeDifficulty = (newDifficulty: Difficulty) => {
-    resetGame(targetRow, newDifficulty);
-    setDifficulty(newDifficulty);
+    if (confirmChange()) {
+      resetGame(targetRow, newDifficulty);
+      setDifficulty(newDifficulty);
+    }
   };
 
   const handleOnChangeTargetRow = (newRow: TARGET_ROW) => {
-    resetGame(newRow, difficulty);
-    setTargetRow(newRow);
+    if (confirmChange()) {
+      resetGame(newRow, difficulty);
+      setTargetRow(newRow);
+    }
   };
 
   return (
     <div className={styles.Root}>
       <Navbar>
-        <Button
-          text="New Game"
-          onClick={() => setGame(new Snakes(0, handleOnGameOver, difficulty))}
-          minimal
-        />
+        <Button text="New Game" onClick={() => handleOnNewGame()} minimal />
         <Popover2
           content={
             <Menu>
@@ -157,6 +172,15 @@ const Root = () => {
         onClose={() => setShowHighScoreDialog(false)}
       />
       <Help isOpen={showHelpDialog} onClose={() => setShowHelpDialog(false)} />
+      <AddScore
+        score={gameMeta.score}
+        onClose={() => {
+          setShowAddHighScoreDialog(false);
+          setShowHighScoreDialog(true);
+          resetGame();
+        }}
+        isOpen={showAddHighScoreDialog}
+      />
     </div>
   );
 };
