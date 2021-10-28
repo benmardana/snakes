@@ -1,6 +1,6 @@
 # Snakes Game
 
-A card game by Gil Dingle
+A card game by Gil
 
 Made by benmcgarvey from these things:
 - [Typescript](https://www.typescriptlang.org/)
