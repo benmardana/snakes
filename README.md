@@ -2,6 +2,8 @@
 
 A card game by Gil
 
+![image](https://user-images.githubusercontent.com/22406673/139179533-3c257747-5804-48cd-bf8c-033978ea38c4.png)
+
 Made by benmcgarvey from these things:
 - [Typescript](https://www.typescriptlang.org/)
 - [React](https://reactjs.org/)
