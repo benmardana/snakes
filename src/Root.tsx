@@ -3,7 +3,9 @@ import { Popover2 } from '@blueprintjs/popover2';
 import { PlayingCard } from 'typedeck';
 import {
   Button,
+  Classes,
   Colors,
+  Dialog,
   Intent,
   Menu,
   MenuItem,
@@ -36,6 +38,7 @@ const Root = () => {
   const [showAddHighScoreDialog, setShowAddHighScoreDialog] = useState(false);
   const [showHelpDialog, setShowHelpDialog] = useState(false);
   const [showHighScoreDialog, setShowHighScoreDialog] = useState(false);
+  const [showAboutDialog, setShowAboutDialog] = useState(false);
   const handleOnGameOver = () => {
     setShowAddHighScoreDialog(true);
   };
@@ -81,21 +84,21 @@ const Root = () => {
   const handleOnPileClicked = game.pile.isEmpty()
     ? undefined
     : () => {
-        try {
-          game.turnOverPile();
-        } catch (error) {
-          // pop a toast with the error message
-          if (error instanceof Error) {
-            showToast({
-              message: error.message,
-              intent: Intent.WARNING,
-              timeout: 2000,
-            });
-          }
-        } finally {
-          updateScore();
+      try {
+        game.turnOverPile();
+      } catch (error) {
+        // pop a toast with the error message
+        if (error instanceof Error) {
+          showToast({
+            message: error.message,
+            intent: Intent.WARNING,
+            timeout: 2000,
+          });
         }
-      };
+      } finally {
+        updateScore();
+      }
+    };
 
   const discardTop = game.discardPile.isEmpty()
     ? undefined
@@ -179,6 +182,11 @@ const Root = () => {
           onClick={() => setShowHighScoreDialog(true)}
           minimal
         />
+        <Button
+          text="About"
+          onClick={() => setShowAboutDialog(true)}
+          minimal
+        />
         {/* <Button text="Help" onClick={() => setShowHelpDialog(true)} minimal /> */}
         <h2 style={{ flexGrow: 1, textAlign: 'right' }}>
           Score: {gameMeta.score}
@@ -206,6 +214,34 @@ const Root = () => {
         }}
         isOpen={showAddHighScoreDialog}
       />
+      <Dialog
+        title="About"
+        isOpen={showAboutDialog}
+        onClose={() => setShowAboutDialog(false)}
+        style={{ width: 'unset', paddingBottom: 0 }}
+      >
+        <div className={Classes.DIALOG_BODY}>
+          <p>
+            Snakes is a solitaire inspired card game designed by Gil.
+          </p>
+          <p>
+            It was made by benmcgarvey.
+          </p>
+          <p>
+            The source code is freely available below:
+          </p>
+          <p>
+            <a href="https://github.com/benmcgarvey/snakes">
+              Game
+            </a>
+          </p>
+          <p>
+            <a href="https://github.com/benmcgarvey/snakes-worker">
+              High scores
+            </a>
+          </p>
+        </div>
+      </Dialog>
     </div>
   );
 };
