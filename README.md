@@ -1,10 +1,11 @@
 # Snakes Game
 
-A card game by Gil
+A card game invented by a friend's wonderful son, Gil.
+https://snakesgame.pages.dev/
 
 ![image](https://user-images.githubusercontent.com/22406673/139179533-3c257747-5804-48cd-bf8c-033978ea38c4.png)
 
-Made by benmcgarvey from these things:
+Made from these things:
 - [Typescript](https://www.typescriptlang.org/)
 - [React](https://reactjs.org/)
 - [Blueprint UI library](https://blueprintjs.com/)
