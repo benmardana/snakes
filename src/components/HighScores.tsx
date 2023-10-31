@@ -10,24 +10,35 @@ const HighScores = ({
   isOpen?: boolean;
 }) => {
   const { data, loading } = useHighScores();
-  const scores = Object.entries(data)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 10);
+  const scores = Object.entries(data).sort((a, b) => b[1] - a[1]);
 
   return (
     <Dialog
       title="High Scores"
       isOpen={isOpen}
       onClose={onClose}
-      style={{ width: 'unset', paddingBottom: 0 }}
+      style={{
+        width: 'unset',
+        maxHeight: 'calc(100vh - 50px)',
+        padding: 0,
+      }}
     >
-      <div className={Classes.DIALOG_BODY}>
+      <div
+        className={Classes.DIALOG_BODY}
+        style={{ overflow: 'scroll', borderRadius: '6px' }}
+      >
         {loading ? (
           <Spinner />
         ) : scores.length === 0 ? (
           'No scores yet, be the first to get on the scoreboard!'
         ) : (
-          <HTMLTable bordered style={{ fontSize: '16px' }}>
+          <HTMLTable
+            bordered
+            style={{
+              fontSize: '16px',
+              background: 'rgb(249, 250, 250)',
+            }}
+          >
             <thead>
               <tr>
                 <th style={{ textAlign: 'center' }}>Initials</th>
